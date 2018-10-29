@@ -1,0 +1,7 @@
+Electrical Schematics should allow for 
+
+1. Variable intensity of light
+2. On/Off 
+3. Blinking at 2Hz
+
+Components used: Arduino (nano?), LED, bypass capacitor, switch, voltage regulator
