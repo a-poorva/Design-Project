@@ -1,0 +1,5 @@
+Making use of Arduino (nano?)
+
+Things to focus on:
+1. Interrupts
+2. Switching between cases and making sure that the interrupt functions for each case
