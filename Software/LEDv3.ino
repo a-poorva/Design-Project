@@ -7,74 +7,111 @@ int ledState = LOW;         // the current state of the LED
 volatile int buttonState;             // the current state of button
 int lastButtonState = LOW;   // last state of button
 
-unsigned long newtime = 0;  // the last time the button was toggled
-unsigned long debounce = 50;    // the debounce time
-unsigned long oldtime = 0; 
+unsigned long current_time = 0;
+unsigned long debounce = 100;    // the debounce time
+unsigned long old_time = 0;
+
 int counter = 0;
+
+//for brightness
+int brightness = 255;    // how bright the LED is
+int increment = 5;    // how many points to fade the LED by
 
 void setup() {
   // put your setup code here, to run once:
-  pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(buttonPin, INPUT);
   pinMode(ledPin, OUTPUT);
-  
- //initial LED state
-  digitalWrite(ledPin, ledState);
-  attachInterrupt(digitalPinToInterrupt(2), buttonPress, CHANGE);   //WHY IS THERE AN ERROR HERE OMG 
 
-  //for brightness
-  int brightness = 255;    // how bright the LED is
-  int fadeAmount = 5;    // how many points to fade the LED by
-  int counter = 0; //counter
+  //initial LED state
+  digitalWrite(ledPin, ledState);
+
+  //interrupt
+  attachInterrupt(digitalPinToInterrupt(2), buttonPress, RISING);
+
+  //Serial
+  Serial.begin(9600);
+
+
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  digitalread(ledState)
-  
-  switch(counter) {
-    case 0: { //case for switching on and off    //SHOULD I MAKE THIS A SEP FUNCTION
-      if (buttonState) {
-        buttonState = 0;
-        newtime = millis();
+  digitalRead(ledState);
+  Serial.println(counter);
 
-        if (newtime - oldtime >= debounce) {
-          ledState = HIGH; 
-        }
-          else {
-            ledState = LOW;
-                }
-           }
-        oldtime = newtime;
-        } 
-      }
-     case 1:  {//case for blinking
-      digitalWrite(ledPin, HIGH);
-      delay(500);
-      digitalWrite(ledPin, LOW);
-      delay(500);
-     }
-     case 2: {//case for very bright
-      digitalWrite(ledPin, brightness);
-      while(brightness > 0 && brightness < 255) {
-        brightness = brightness + fadeAmount;
-      }
-     case 3 { //case for intermediate
-      digitalWrite(ledPin, brightness);
-      while(brightness > 0 && brightness < (brightness/2)) {
-        brightness = brightness + fadeAmount;
-      }
-     case 4: {//case for low brightness
-      digitalWrite(ledPin, brightness);
-      while(brightness > 0 && brightness < (brightness/4)) {
-        brightness = brightness + fadeAmount;
-      }
-     }
+  //anti-bouncing
+  if (buttonState) {
+    buttonState = 0;
+    old_time = millis();
+
+    if (current_time - old_time >= debounce) {
+      counter++;
     }
-   }
   }
- }
+
+
+
+  current_time = old_time;
+
+  //to make sure counter doesn't go on forever
+  if (counter > 5) {
+    counter = 0;
+  }
+
+
+  switch (counter) {
+    case 1: {//case for on & off
+        buttonState = digitalRead(buttonPin);
+        if (buttonState == HIGH) {
+          digitalWrite(ledPin, HIGH);
+        }
+      else {
+        digitalWrite(ledPin, LOW);
+      }
+      break;
+    }
+    case 2:  {//case for blinking
+        digitalWrite(ledPin, HIGH);
+        delay(500);
+        digitalWrite(ledPin, LOW);
+        delay(500);
+        break;
+      }
+    case 3: {//case for very bright
+        int current_brightness = digitalRead(ledPin);
+        if (current_brightness = HIGH) {
+          current_brightness = current_brightness + increment;
+          }
+    }
+        break;
+      
+    case 4: { //case for intermediate
+      
+        int current_brightness = digitalRead(ledPin);
+        if (current_brightness = HIGH) {
+          current_brightness = current_brightness - increment;
+          }
+    
+        break;
+    }
         
-void buttonPress() {
-  buttonState = TRUE;
-  counter++
+        
+      
+    case 5: {//case for low brightness
+        int current_brightness = digitalRead(ledPin);
+        if (current_brightness = HIGH) {
+          current_brightness = current_brightness - 3*(increment);
+          }
+        break;
+      }
+
+  }
+}
+
+
+
+void buttonPress()  {
+  
+  counter++;
+
 }
