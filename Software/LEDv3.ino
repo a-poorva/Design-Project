@@ -1,24 +1,19 @@
 
-const int buttonPin = 2;    // the number of the pushbutton pin
-const int ledPin = 13;      // the number of the LED pin
+#define buttonPin 2
+#define ledPin 5
 
-// Variable Variables
-int ledState = LOW;         // the current state of the LED
-volatile int buttonState;             // the current state of button
-int lastButtonState = LOW;   // last state of button
+int ledState = HIGH;         // the current state of the LED
+bool buttonState;             // the current reading from the button
+int lastButtonState = LOW;   // the previous reading from the button
+int max_brightness = 255;
 
-unsigned long current_time = 0;
-unsigned long debounce = 100;    // the debounce time
-unsigned long old_time = 0;
+unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
+unsigned long debounceDelay = 2000;    // the debounce time; increase if the output flickers
 
 int counter = 0;
+int brightness = 0;
 
-//for brightness
-int brightness = 255;    // how bright the LED is
-int increment = 5;    // how many points to fade the LED by
-
-void setup() {
-  // put your setup code here, to run once:
+void setup() { 
   pinMode(buttonPin, INPUT);
   pinMode(ledPin, OUTPUT);
 
@@ -26,41 +21,64 @@ void setup() {
   digitalWrite(ledPin, ledState);
 
   //interrupt
-  attachInterrupt(digitalPinToInterrupt(2), buttonPress, RISING);
+  attachInterrupt(digitalPinToInterrupt(2), press_the_button, RISING);
 
   //Serial
   Serial.begin(9600);
-
-
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  debounce_func();
+  shine_the_light();
+  counter_func();
   digitalRead(ledState);
   Serial.println(counter);
+}
+  
 
-  //anti-bouncing
-  if (buttonState) {
-    buttonState = 0;
-    old_time = millis();
 
-    if (current_time - old_time >= debounce) {
-      counter++;
+void counter_func() {//counter and to make sure counter doesn't go on forever
+  if (buttonState = true) {
+  lastButtonState = digitalRead(buttonPin);
+  delay(200);
+  buttonState = digitalRead(buttonPin);
+    if (buttonState == 1 && lastButtonState == 0){
+      counter = counter + 1;
+
+    }
+  }
+ buttonState = false;
+ 
+  if (counter > 4) {
+    counter = 0;
+  }
+}
+
+
+void debounce_func() {
+  int reading = digitalRead(buttonPin);
+  if (reading != lastButtonState) {
+    lastDebounceTime = millis();
+  }
+    if ((millis() - lastDebounceTime) > debounceDelay) {
+   
+      if (reading != buttonState) {
+        buttonState = reading;
+
+        if (buttonState == HIGH) {
+        ledState = !ledState;
+      }
     }
   }
 
+  
+  digitalWrite(ledPin, ledState);
+  lastButtonState = reading;
+}
 
-
-  current_time = old_time;
-
-  //to make sure counter doesn't go on forever
-  if (counter > 5) {
-    counter = 0;
-  }
-
-
+void shine_the_light() {
   switch (counter) {
-    case 1: {//case for on & off
+    case 0: {//case for on & off
         buttonState = digitalRead(buttonPin);
         if (buttonState == HIGH) {
           digitalWrite(ledPin, HIGH);
@@ -70,47 +88,42 @@ void loop() {
       }
       break;
     }
-    case 2:  {//case for blinking
+    case 1:  {//case for blinking
         digitalWrite(ledPin, HIGH);
         delay(500);
         digitalWrite(ledPin, LOW);
         delay(500);
         break;
       }
-    case 3: {//case for very bright
-        int current_brightness = digitalRead(ledPin);
-        if (current_brightness = HIGH) {
-          current_brightness = current_brightness + increment;
-          }
+    case 2: {//case for very bright 
+      brightness = int(max_brightness);
+      ledState = HIGH;
+      analogWrite(ledPin, ledState);
     }
         break;
       
-    case 4: { //case for intermediate
-      
-        int current_brightness = digitalRead(ledPin);
-        if (current_brightness = HIGH) {
-          current_brightness = current_brightness - increment;
-          }
-    
+    case 3: { //case for intermediate
+      brightness = int(max_brightness/2);
+      ledState = HIGH;
+      analogWrite(ledPin, brightness);
         break;
     }
         
-        
-      
-    case 5: {//case for low brightness
-        int current_brightness = digitalRead(ledPin);
-        if (current_brightness = HIGH) {
-          current_brightness = current_brightness - 3*(increment);
-          }
+     case 4: {//case for low brightness
+      brightness = int(max_brightness/4);
+      ledState = HIGH;
+      analogWrite(ledPin, brightness);
         break;
       }
+     
+     
 
   }
 }
 
 
 
-void buttonPress()  {
+void press_the_button()  {
   
   counter++;
 
