@@ -11,7 +11,7 @@ unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
 unsigned long debounceDelay = 2000;    // the debounce time; increase if the output flickers
 
 int counter = 0;
-int brightness = 0;
+int brightness;
 
 void setup() { 
   pinMode(buttonPin, INPUT);
