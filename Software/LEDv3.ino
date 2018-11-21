@@ -7,8 +7,8 @@ bool buttonState;             // the current reading from the button
 int lastButtonState = LOW;   // the previous reading from the button
 int max_brightness = 255;
 
-unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
-unsigned long debounceDelay = 2000;    // the debounce time; increase if the output flickers
+unsigned long lastDebounceTime = 0;  // the last time the button was pressed
+unsigned long debounceDelay = 2000;    
 
 int counter = 0;
 int brightness;
