@@ -1,130 +1,86 @@
 
+#define flashingRate 2
 #define buttonPin 2
-#define ledPin 5
+#define ledPin 6
 
-int ledState = HIGH;         // the current state of the LED
-bool buttonState;             // the current reading from the button
-int lastButtonState = LOW;   // the previous reading from the button
-int max_brightness = 255;
-
-unsigned long lastDebounceTime = 0;  // the last time the button was pressed
-unsigned long debounceDelay = 2000;    
-
+bool buttonState = false;
 int counter = 0;
-int brightness;
+unsigned long previousMillis = 0;
+unsigned long currentMillis = 0;
+int ledState = LOW;
+unsigned long lastButtonTime = 0; 
+unsigned long debounceTime = 250;
+int freq = 1000 / flashingRate;
 
-void setup() { 
+void setup() {
+  // put your setup code here, to run once:
   pinMode(buttonPin, INPUT);
+  
   pinMode(ledPin, OUTPUT);
+  
+  attachInterrupt(digitalPinToInterrupt(2), button_press, FALLING);
 
-  //initial LED state
-  digitalWrite(ledPin, ledState);
-
-  //interrupt
-  attachInterrupt(digitalPinToInterrupt(2), press_the_button, RISING);
-
-  //Serial
   Serial.begin(9600);
 }
 
 void loop() {
+  // put your main code here, to run repeatedly:
   debounce_func();
-  shine_the_light();
-  counter_func();
-  digitalRead(ledState);
+  shine_LED();
   Serial.println(counter);
 }
-  
 
-
-void counter_func() {//counter and to make sure counter doesn't go on forever
-  if (buttonState = true) {
-  lastButtonState = digitalRead(buttonPin);
-  delay(200);
-  buttonState = digitalRead(buttonPin);
-    if (buttonState == 1 && lastButtonState == 0){
-      counter = counter + 1;
-
-    }
+void debounce_func(){
+  if ((millis() - lastButtonTime) > debounceTime){
+    buttonState = true;
+    lastButtonTime = millis();
   }
- buttonState = false;
- 
-  if (counter > 4) {
+}
+
+void button_press() {
+  if (buttonState) {
+    counter += 1;
+    buttonState = false;
+  } 
+  if (counter > 5) {
     counter = 0;
   }
 }
 
 
-void debounce_func() {
-  int reading = digitalRead(buttonPin);
-  if (reading != lastButtonState) {
-    lastDebounceTime = millis();
-  }
-    if ((millis() - lastDebounceTime) > debounceDelay) {
-   
-      if (reading != buttonState) {
-        buttonState = reading;
-
-        if (buttonState == HIGH) {
-        ledState = !ledState;
-      }
-    }
-  }
-
-  
-  digitalWrite(ledPin, ledState);
-  lastButtonState = reading;
-}
-
-void shine_the_light() {
+void shine_LED() {
   switch (counter) {
-    case 0: {//case for on & off
-        buttonState = digitalRead(buttonPin);
-        if (buttonState == HIGH) {
-          digitalWrite(ledPin, HIGH);
-        }
-      else {
-        digitalWrite(ledPin, LOW);
-      }
+    case 0:
+      analogWrite(ledPin, 0);
       break;
-    }
-    case 1:  {//case for blinking
-        digitalWrite(ledPin, HIGH);
-        delay(500);
-        digitalWrite(ledPin, LOW);
-        delay(500);
-        break;
-      }
-    case 2: {//case for very bright 
-      brightness = int(max_brightness);
-      ledState = HIGH;
-      analogWrite(ledPin, ledState);
-    }
-        break;
+    case 1:
+      analogWrite(ledPin, 75);
+      break;
+    case 2:
+      analogWrite(ledPin, 175);
+      break;
+    case 3:
+      analogWrite(ledPin, 255);
+      break;
+    case 4:
       
-    case 3: { //case for intermediate
-      brightness = int(max_brightness/2);
-      ledState = HIGH;
-      analogWrite(ledPin, brightness);
-        break;
-    }
-        
-     case 4: {//case for low brightness
-      brightness = int(max_brightness/4);
-      ledState = HIGH;
-      analogWrite(ledPin, brightness);
-        break;
+      currentMillis = millis();
+      if (currentMillis - previousMillis >= freq) {
+        previousMillis = currentMillis;
+        if (ledState == LOW) {
+          ledState = HIGH;
+        }
+        else {
+          ledState = LOW;
+        }
       }
-     
-     
-
-  }
-}
-
-
-
-void press_the_button()  {
-  
-  counter++;
-
+      digitalWrite(ledPin, ledState);
+      break;
+    case 5: 
+      analogWrite(ledPin, 0);
+      ledState = LOW;
+      break;
+      
+      
+   }
 }
