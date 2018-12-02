@@ -80,10 +80,7 @@ void LED_states() {
       }
       digitalWrite(ledPin, ledState);
       break;
-    case 5: //off
-      analogWrite(ledPin, 0);
-      ledState = LOW;
-      break;
+     
       
       
    }
