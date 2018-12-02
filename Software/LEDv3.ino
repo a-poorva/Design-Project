@@ -14,23 +14,24 @@ bool buttonState = false;
 int freq = 1000 / flashingRate;
 
 void setup() {
-  // put your setup code here, to run once:
   pinMode(buttonPin, INPUT);
   
   pinMode(ledPin, OUTPUT);
-  
+
+  //interrupt
   attachInterrupt(digitalPinToInterrupt(2), button_press, FALLING);
 
+  //serial
   Serial.begin(9600);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   debounce_func();
   LED_states();
   Serial.println(counter);
 }
 
+//debouncing function
 void debounce_func(){
   if ((millis() - lastButtonTime) > debounceTime){
     buttonState = true;
@@ -38,6 +39,8 @@ void debounce_func(){
   }
 }
 
+
+//interrupt
 void button_press() {
   if (buttonState) {
     counter += 1;
@@ -48,23 +51,23 @@ void button_press() {
   }
 }
 
-
+//switching states
 void LED_states() {
   switch (counter) {
-    case 0:
+    case 0: //off
       analogWrite(ledPin, 0);
       break;
-    case 1:
-      analogWrite(ledPin, 75);
+    case 1: //low brightness
+      analogWrite(ledPin, 70);
       break;
-    case 2:
-      analogWrite(ledPin, 175);
+    case 2: //medium brightness
+      analogWrite(ledPin, 160);
       break;
-    case 3:
+    case 3: //high brightness
       analogWrite(ledPin, 255);
       break;
     case 4:
-      
+      //flashing using millis
       currentMillis = millis();
       if (currentMillis - previousMillis >= freq) {
         previousMillis = currentMillis;
@@ -77,7 +80,7 @@ void LED_states() {
       }
       digitalWrite(ledPin, ledState);
       break;
-    case 5: 
+    case 5: //off
       analogWrite(ledPin, 0);
       ledState = LOW;
       break;
