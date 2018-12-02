@@ -19,7 +19,7 @@ void setup() {
   pinMode(ledPin, OUTPUT);
 
   //interrupt
-  attachInterrupt(digitalPinToInterrupt(2), button_press, FALLING);
+  attachInterrupt(digitalPinToInterrupt(2), button_press, RISING);
 
   //serial
   Serial.begin(9600);
