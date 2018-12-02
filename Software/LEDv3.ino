@@ -3,13 +3,14 @@
 #define buttonPin 2
 #define ledPin 6
 
-bool buttonState = false;
 int counter = 0;
 unsigned long previousMillis = 0;
 unsigned long currentMillis = 0;
-int ledState = LOW;
 unsigned long lastButtonTime = 0; 
 unsigned long debounceTime = 250;
+
+int ledState = LOW;
+bool buttonState = false;
 int freq = 1000 / flashingRate;
 
 void setup() {
@@ -26,7 +27,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   debounce_func();
-  shine_LED();
+  LED_states();
   Serial.println(counter);
 }
 
@@ -48,7 +49,7 @@ void button_press() {
 }
 
 
-void shine_LED() {
+void LED_states() {
   switch (counter) {
     case 0:
       analogWrite(ledPin, 0);
