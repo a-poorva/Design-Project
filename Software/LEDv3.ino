@@ -1,13 +1,13 @@
 
 #define flashingRate 2
 #define buttonPin 2
-#define ledPin 6
+#define ledPin 5
 
 int counter = 0;
 unsigned long previousMillis = 0;
 unsigned long currentMillis = 0;
 unsigned long lastButtonTime = 0; 
-unsigned long debounceTime = 250;
+unsigned long debounceTime = 330;
 
 int ledState = LOW;
 bool buttonState = false;
@@ -19,7 +19,7 @@ void setup() {
   pinMode(ledPin, OUTPUT);
 
   //interrupt
-  attachInterrupt(digitalPinToInterrupt(2), button_press, RISING);
+  attachInterrupt(digitalPinToInterrupt(2), button_press, FALLING);
 
   //serial
   Serial.begin(9600);
@@ -46,7 +46,7 @@ void button_press() {
     counter += 1;
     buttonState = false;
   } 
-  if (counter > 5) {
+  if (counter > 4) {
     counter = 0;
   }
 }
