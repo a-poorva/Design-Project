@@ -2748,7 +2748,6 @@ It has a reduced top mask to make it harder to install upside-down.</description
 <part name="G1" library="battery" library_urn="urn:adsk.eagle:library:109" deviceset="AB9V" device="" package3d_urn="urn:adsk.eagle:package:4600/1"/>
 <part name="R1" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="10KOHM" device="-VERT-1/4W-5%" package3d_urn="urn:adsk.eagle:package:39656/1" value="10k"/>
 <part name="GND1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="GND2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="LED2" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:6240538/1"/>
 <part name="R2" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="100OHM" device="-0603-1/4W-5%" package3d_urn="urn:adsk.eagle:package:39650/1" value="220"/>
@@ -2756,6 +2755,7 @@ It has a reduced top mask to make it harder to install upside-down.</description
 <part name="JP2" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="PINHD-1X15" device="" package3d_urn="urn:adsk.eagle:package:6240805/1"/>
 <part name="SW1" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="SWITCH_PUSHBUTTON" device="EVQ-PE" package3d_urn="urn:adsk.eagle:package:6240957/1"/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -2772,9 +2772,6 @@ It has a reduced top mask to make it harder to install upside-down.</description
 </instance>
 <instance part="GND1" gate="1" x="147.32" y="40.64">
 <attribute name="VALUE" x="144.78" y="38.1" size="1.778" layer="96"/>
-</instance>
-<instance part="GND2" gate="1" x="53.34" y="35.56">
-<attribute name="VALUE" x="50.8" y="33.02" size="1.778" layer="96"/>
 </instance>
 <instance part="GND3" gate="1" x="10.16" y="53.34">
 <attribute name="VALUE" x="7.62" y="50.8" size="1.778" layer="96"/>
@@ -2802,6 +2799,9 @@ It has a reduced top mask to make it harder to install upside-down.</description
 <instance part="GND4" gate="1" x="68.58" y="63.5">
 <attribute name="VALUE" x="66.04" y="60.96" size="1.778" layer="96"/>
 </instance>
+<instance part="GND5" gate="1" x="22.86" y="45.72">
+<attribute name="VALUE" x="20.32" y="43.18" size="1.778" layer="96"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -2813,32 +2813,30 @@ It has a reduced top mask to make it harder to install upside-down.</description
 <wire x1="10.16" y1="55.88" x2="10.16" y2="63.5" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="GND2" gate="1" pin="GND"/>
-<pinref part="R1" gate="G$1" pin="2"/>
-<wire x1="53.34" y1="50.8" x2="53.34" y2="48.26" width="0.1524" layer="91"/>
-<wire x1="53.34" y1="48.26" x2="58.42" y2="48.26" width="0.1524" layer="91"/>
-<wire x1="58.42" y1="48.26" x2="58.42" y2="40.64" width="0.1524" layer="91"/>
-<wire x1="58.42" y1="40.64" x2="53.34" y2="40.64" width="0.1524" layer="91"/>
-<wire x1="53.34" y1="40.64" x2="53.34" y2="38.1" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="LED2" gate="G$1" pin="C"/>
 <pinref part="GND4" gate="1" pin="GND"/>
 <wire x1="68.58" y1="66.04" x2="68.58" y2="68.58" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="SW1" gate="G$1" pin="P$1"/>
+<wire x1="22.86" y1="55.88" x2="27.94" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="55.88" x2="22.86" y2="48.26" width="0.1524" layer="91"/>
+<pinref part="GND5" gate="1" pin="GND"/>
+<wire x1="22.86" y1="48.26" x2="22.86" y2="45.72" width="0.1524" layer="91"/>
+<junction x="22.86" y="48.26"/>
 </segment>
 </net>
 <net name="N$1" class="0">
 <segment>
 <pinref part="G1" gate="G$1" pin="+"/>
-<wire x1="10.16" y1="88.9" x2="22.86" y2="88.9" width="0.1524" layer="91"/>
-<wire x1="22.86" y1="88.9" x2="147.32" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="10.16" y1="88.9" x2="53.34" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="53.34" y1="88.9" x2="147.32" y2="88.9" width="0.1524" layer="91"/>
 <wire x1="147.32" y1="88.9" x2="147.32" y2="53.34" width="0.1524" layer="91"/>
 <pinref part="JP2" gate="A" pin="15"/>
 <wire x1="147.32" y1="53.34" x2="134.62" y2="53.34" width="0.1524" layer="91"/>
-<pinref part="SW1" gate="G$1" pin="P$1"/>
-<wire x1="22.86" y1="88.9" x2="22.86" y2="55.88" width="0.1524" layer="91"/>
-<wire x1="22.86" y1="55.88" x2="27.94" y2="55.88" width="0.1524" layer="91"/>
-<junction x="22.86" y="88.9"/>
+<pinref part="R1" gate="G$1" pin="2"/>
+<wire x1="53.34" y1="50.8" x2="53.34" y2="88.9" width="0.1524" layer="91"/>
+<junction x="53.34" y="88.9"/>
 </segment>
 </net>
 <net name="N$2" class="0">
