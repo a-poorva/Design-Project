@@ -1,9 +1,8 @@
 Components used include:
 
-1. Arduino Uno
-2. Voltage Regulator - IC1 7850T
-3. Pushbutton - Adafruit
-4. Resistors - R1, R2 -0402-01/16W-1%, SparkFun (100k)
-5. Battery - G1, AB9V
-6. LED - LED2, 5MM, Adafruit
-7. Capacitor - 0.1 uF, 0402-16V-10%, 0.1in
+1. Arduino Uno --> The PCB here is not routed as I used a protoboard. I have laid out the components as it might look on the shield.
+2. Pushbutton - Adafruit
+3. Resistors - R1, R2 -0402-01/16W-1%, SparkFun (100k)
+4. Battery - G1, AB9V
+5. LED - LED2, 5MM, Adafruit
+
