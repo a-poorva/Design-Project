@@ -1,6 +1,14 @@
 Mechanical Design
 
+There are two designs, one being the elliptical cylinder design with magnets and the other being the black box for the Arduino Uno.
 
+The cylinder has:
 --> USB port
 --> holes for LED/switch
---> thread
+--> Magnets
+
+
+The box has 
+--> holes for LED/Switch
+--> Grooves on the lid
+--> threaded holes for adding screws
