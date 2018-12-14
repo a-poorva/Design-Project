@@ -54,9 +54,23 @@ void button_press() {
     counter += 1;
     buttonState = false;
   } 
-  if (counter > 4) {
+  if (counter > 4) { //to make sure the counter doesn't go on forever --> easier to debug this way
     counter = 0;
   }
+}
+
+void flashing_func() { //to flash the LED at a certain frequency 
+  currentMillis = millis();
+      if (currentMillis - previousMillis >= frequency) {
+        previousMillis = currentMillis;
+        if (ledState == LOW) {
+          ledState = HIGH;
+        }
+        else {
+          ledState = LOW;
+        }
+      }
+      digitalWrite(ledPin, ledState);
 }
 
 //switching states
@@ -76,17 +90,7 @@ void LED_states() {
       break;
     case 4:
       //flashing using millis
-      currentMillis = millis();
-      if (currentMillis - previousMillis >= frequency) {
-        previousMillis = currentMillis;
-        if (ledState == LOW) {
-          ledState = HIGH;
-        }
-        else {
-          ledState = LOW;
-        }
-      }
-      digitalWrite(ledPin, ledState);
+      flashing_func();
       break;
      
       
