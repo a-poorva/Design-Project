@@ -13,7 +13,7 @@ int baudValue = 9600;
 int low = 70;
 int medium = 160;
 int high = 255;
-int freq = 1000 / flashingRate;
+int frequency = 1000 / flashingRate;
 
 //introducing starting state of button and LED
 int ledState = LOW;
@@ -77,7 +77,7 @@ void LED_states() {
     case 4:
       //flashing using millis
       currentMillis = millis();
-      if (currentMillis - previousMillis >= freq) {
+      if (currentMillis - previousMillis >= frequency) {
         previousMillis = currentMillis;
         if (ledState == LOW) {
           ledState = HIGH;
