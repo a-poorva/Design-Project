@@ -5,4 +5,5 @@ Components used include:
 3. Resistors - R1, R2 -0402-01/16W-1%, SparkFun (100k)
 4. Battery - G1, AB9V
 5. LED - LED2, 5MM, Adafruit
+6. Arduino Nano --> The PCB here is routed as I etched this board.
 
