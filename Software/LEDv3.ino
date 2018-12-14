@@ -35,7 +35,7 @@ void setup() {
 void loop() {
   debounce_func();
   LED_states();
-  Serial.print("Your bike is in state: ");
+  Serial.print("Your bike light is in state: "); //you can use this to debug states
   Serial.println(counter);
 }
 
